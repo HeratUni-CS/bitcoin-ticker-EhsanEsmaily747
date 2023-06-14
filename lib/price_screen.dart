@@ -20,17 +20,13 @@ class _PriceScreenState extends State<PriceScreen> {
     OnlineRates onlinerate=OnlineRates();
     var data= await onlinerate.getRate(currency);
     print(data);
-    // try {
      
     setState(() {
       BTCrate=data[0]['rate'].toInt();
       ETHrate=data[1]['rate'].toInt();
       LTCrate=data[2]['rate'].toInt();
     }); 
-    // } catch (e) {
-    //   print(e);
-    // }
-     
+    
     }
 
   DropdownButton getCurrenciesMethodforAndroid(){
