@@ -19,13 +19,19 @@ class _PriceScreenState extends State<PriceScreen> {
   void getOnlineRates(String? currency) async{
     OnlineRates onlinerate=OnlineRates();
     var data= await onlinerate.getRate(currency);
+    print(data);
+    // try {
+     
     setState(() {
-      
-    rate=data['rate'].toInt();
-    });
-    print(rate);
-
-  }
+      BTCrate=data[0]['rate'].toInt();
+      ETHrate=data[1]['rate'].toInt();
+      LTCrate=data[2]['rate'].toInt();
+    }); 
+    // } catch (e) {
+    //   print(e);
+    // }
+     
+    }
 
   DropdownButton getCurrenciesMethodforAndroid(){
     
@@ -63,7 +69,10 @@ class _PriceScreenState extends State<PriceScreen> {
             }, children: getcurrency);
   }
 
-  int rate=0;
+  int BTCrate=0;
+  int ETHrate=0;
+  int LTCrate=0;
+
   String? selectedCurrency='USD';
 
   
@@ -78,6 +87,30 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 BTC = $BTCrate $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
             child: Card(
@@ -89,7 +122,27 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $rate $selectedCurrency',
+                  '1 ETH = $ETHrate $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 LTC = $LTCrate $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
@@ -99,7 +152,10 @@ class _PriceScreenState extends State<PriceScreen> {
               ),
             ),
           ),
-          Container(
+
+            ],
+          ),
+                    Container(
             height: 150.0,
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
