@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
-import 'dart:io';
+// import 'dart:io';
+import 'services/statistics.dart';
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -9,6 +10,22 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+  @override
+  void initState(){
+    super.initState();
+    getOnlineRates('USD');
+  }
+
+  void getOnlineRates(String? currency) async{
+    OnlineRates onlinerate=OnlineRates();
+    var data= await onlinerate.getRate(currency);
+    setState(() {
+      
+    rate=data['rate'].toInt();
+    });
+    print(rate);
+
+  }
 
   DropdownButton getCurrenciesMethodforAndroid(){
     
@@ -26,6 +43,7 @@ class _PriceScreenState extends State<PriceScreen> {
                onChanged:(value){
                     setState(() {
                     selectedCurrency=value;
+                    getOnlineRates(selectedCurrency);
                     });
                    });
   }
@@ -45,7 +63,11 @@ class _PriceScreenState extends State<PriceScreen> {
             }, children: getcurrency);
   }
 
+  int rate=0;
   String? selectedCurrency='USD';
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,10 +86,10 @@ class _PriceScreenState extends State<PriceScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? USD',
+                  '1 BTC = $rate $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
@@ -89,3 +111,6 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 }
+
+
+//api key = 095AEA86-879E-48EB-B48F-0792BF872A3B
